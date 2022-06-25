@@ -15,27 +15,39 @@
 
 </head>
 <body>
-    <h1>Tasks</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <h1 class="display-5 fw-bold">Tasks</h1>
 
-    <form action="{% url 'create_task' %}" method="POST">
-        <!-- Esto te lo pide para que Django sepa que estamos enviando los datos desde su servidor -->
-        {% csrf_token %}
-        <!-- Genera un campo oculto con un valor generado por Django -->
-        <input type="text" name="title" placeholder="Write a title">
-        <textarea name="description" placeholder="Write a description" rows="3"></textarea>
-        <button>Save</button>
-    </form>
-
-    {% for task in tasks %}
-        <h4>{{ task.title }}</h4>
-        <p>{{ task.description }}</p>
-        <form action="{% url 'delete_task' task.id %}" method="POST">
-            {% csrf_token %}
-            <button>Delete</button>
-        </form>
-        <!-- Si la lista esta vacia: -->
-        {% empty %}                     
-            <h1>No tasks yet</h1>
-    {% endfor %}
+                <form action="{% url 'create_task' %}" method="POST" class="card card-body bg-dark">
+                    <!-- Esto te lo pide para que Django sepa que estamos enviando los datos desde su servidor -->
+                    {% csrf_token %}
+                    <!-- Genera un campo oculto con un valor generado por Django -->
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" placeholder="Write a title" class="form-control my-1">
+                    <label for="description">Description:</label>
+                    <textarea name="description" placeholder="Write a description" rows="3" class="form-control my-1"></textarea>
+                    <button class="btn btn-success my-1">Save</button>
+                </form>
+            
+                {% for task in tasks %}
+                    <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between">
+                        <div>
+                            <h4>{{ task.title }}</h4>
+                            <p>{{ task.description }}</p>
+                        </div>
+                        <form action="{% url 'delete_task' task.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <!-- Si la lista esta vacia: -->
+                    {% empty %}                     
+                        <h1 class="display-4 text-center">No tasks yet</h1>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>

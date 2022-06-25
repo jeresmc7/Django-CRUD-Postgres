@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django CRUD</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+
+</head>
+<body>
+    <h1>Tasks</h1>
+
+    <form action="{% url 'create_task' %}" method="POST">
+        <!-- Esto te lo pide para que Django sepa que estamos enviando los datos desde su servidor -->
+        {% csrf_token %}
+        <!-- Genera un campo oculto con un valor generado por Django -->
+        <input type="text" name="title" placeholder="Write a title">
+        <textarea name="description" placeholder="Write a description" rows="3"></textarea>
+        <button>Save</button>
+    </form>
+
+    {% for task in tasks %}
+        <h4>{{ task.title }}</h4>
+        <p>{{ task.description }}</p>
+        <form action="{% url 'delete_task' task.id %}" method="POST">
+            {% csrf_token %}
+            <button>Delete</button>
+        </form>
+        <!-- Si la lista esta vacia: -->
+        {% empty %}                     
+            <h1>No tasks yet</h1>
+    {% endfor %}
+</body>
+</html>
